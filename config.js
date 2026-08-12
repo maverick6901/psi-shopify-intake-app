@@ -10,19 +10,31 @@ export const config = {
   port: Number(process.env.PORT || 3000),
   appBaseUrl: required("APP_BASE_URL").replace(/\/$/, ""),
   shopDomain: required("SHOPIFY_SHOP_DOMAIN"),
+
+  // Post-Jan 2026 Shopify auth: client credentials replace static admin tokens.
+  // These are required now — you get them from the Dev Dashboard, not the old
+  // "Manage private apps" screen (which no longer exists).
+  clientId: required("SHOPIFY_CLIENT_ID"),
+  clientSecret: required("SHOPIFY_CLIENT_SECRET"),
+
+  // Legacy static token — optional now. Keep only if you still have an old
+  // shpat_ token from before Jan 1, 2026 that hasn't been revoked yet.
+  // New setups should leave this unset and rely on clientId/clientSecret.
   adminToken: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN,
-  clientId: process.env.SHOPIFY_CLIENT_ID,
-  clientSecret: process.env.SHOPIFY_CLIENT_SECRET,
+
   apiVersion: process.env.SHOPIFY_API_VERSION || "2026-07",
   sharedSecret: required("SHOPIFY_APP_SHARED_SECRET"),
+
   psiAdminEmail: process.env.PSI_ADMIN_EMAIL || "admin@purseonalshopper.com",
   cproFactor: Number(process.env.CPRO_FACTOR || 0.8),
   buyoutFactor: Number(process.env.BUYOUT_FACTOR || 0.6),
   roundTo: Number(process.env.ROUND_TO || 25),
   minResaleValue: Number(process.env.MIN_RESALE_VALUE || 750),
+
   emailDelivery: process.env.EMAIL_DELIVERY || "log",
   resendApiKey: process.env.RESEND_API_KEY,
   fromEmail: process.env.FROM_EMAIL || "Purseonal Shopper Inc. <admin@purseonalshopper.com>",
+
   agreementUrls: {
     consignment: process.env.CONSIGNMENT_AGREEMENT_URL,
     buyout: process.env.BUYOUT_AGREEMENT_URL
