@@ -24,6 +24,16 @@ const upload = multer({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (_req, res) => {
+  res
+    .status(200)
+    .send(`
+      <h1>PSI Shopify Intake App</h1>
+      <p>The intake app is running.</p>
+      <p>Health check: <a href="/health">/health</a></p>
+    `);
+});
+
 const photoOrder = [
   "Front of bag",
   "Bottom of bag",
