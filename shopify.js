@@ -1,13 +1,16 @@
 import { config } from "./config.js";
+import { getAccessToken } from "./shopify-auth.js";
 
 const endpoint = `https://${config.shopDomain}/admin/api/${config.apiVersion}/graphql.json`;
 
 export async function adminGraphql(query, variables = {}) {
+  const accessToken = await getAccessToken();
+
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Shopify-Access-Token": config.adminToken
+      "X-Shopify-Access-Token": accessToken
     },
     body: JSON.stringify({ query, variables })
   });
