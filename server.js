@@ -89,6 +89,20 @@ app.get("/health", (_req, res) => {
 });
 
 app.post("/proxy/submit", requireValidAppProxy, upload.array("photos", 9), async (req, res) => {
+app.get("/proxy/health", (_req, res) => {
+  res.json({ ok: true, route: "/proxy/health" });
+});
+
+app.get("/proxy", (_req, res) => {
+  res
+    .status(200)
+    .send(`
+      <h1>PSI Shopify Intake App Proxy</h1>
+      <p>The Shopify app proxy is connected.</p>
+    `);
+});
+
+async function handleIntakeSubmit(req, res) {
   try {
     const intake = cleanIntake(req.body);
     const validationError = validateIntake(intake, req.files);
@@ -127,6 +141,10 @@ app.post("/proxy/submit", requireValidAppProxy, upload.array("photos", 9), async
     });
   }
 });
+}
+
+app.post("/proxy/submit", requireValidAppProxy, upload.array("photos", 9), handleIntakeSubmit);
+app.post("/submit", requireValidAppProxy, upload.array("photos", 9), handleIntakeSubmit);
 
 app.post("/admin/intakes/:requestId/offer", async (req, res) => {
   try {
