@@ -12,18 +12,18 @@ export const config = {
   shopDomain: required("SHOPIFY_SHOP_DOMAIN"),
 
   // Post-Jan 2026 Shopify auth: client credentials replace static admin tokens.
-  // These are required now — you get them from the Dev Dashboard, not the old
-  // "Manage private apps" screen (which no longer exists).
   clientId: required("SHOPIFY_CLIENT_ID"),
   clientSecret: required("SHOPIFY_CLIENT_SECRET"),
 
-  // Legacy static token — optional now. Keep only if you still have an old
-  // shpat_ token from before Jan 1, 2026 that hasn't been revoked yet.
-  // New setups should leave this unset and rely on clientId/clientSecret.
+  // Legacy static token — optional, only relevant if you still have an old
+  // shpat_ token from before Jan 1, 2026.
   adminToken: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN,
 
   apiVersion: process.env.SHOPIFY_API_VERSION || "2026-07",
-  sharedSecret: required("SHOPIFY_APP_SHARED_SECRET"),
+
+  // Client secret doubles as the shared secret for webhook HMAC verification —
+  // no separate SHOPIFY_APP_SHARED_SECRET needed.
+  sharedSecret: process.env.SHOPIFY_CLIENT_SECRET,
 
   psiAdminEmail: process.env.PSI_ADMIN_EMAIL || "admin@purseonalshopper.com",
   cproFactor: Number(process.env.CPRO_FACTOR || 0.8),
